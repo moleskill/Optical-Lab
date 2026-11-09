@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <title>Optical Lab — Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body data-theme="dark">
+  <div class="app">
+    <header class="top">
+      <div class="identity">
+        <div class="mark">◈</div>
+        <div>
+          <div class="name">OPTICAL <b>LAB</b><span class="version">STUDIO 4.0</span></div>
+          <div class="subtitle">Интерактивная оптическая лаборатория</div>
+        </div>
+      </div>
+      <div class="top-actions"><span class="live"><i></i> Физический движок активен</span><button class="iconbtn"
+          id="undo" title="Отменить (Ctrl+Z)">↶</button><button class="iconbtn" id="redo"
+          title="Повторить (Ctrl+Y)">↷</button><button class="button" id="theme">☀ <span>Тема</span></button><button
+          class="button" id="export">↓ <span>Сохранить</span></button><button class="button" id="import">↑
+          <span>Открыть</span></button><input id="file" type="file" accept=".json,application/json" hidden></div>
+    </header>
+    <div class="shell">
+      <aside class="left">
+        <div class="sidebar-title">ИНСТРУМЕНТЫ <span>01</span></div>
+        <div class="tools"><button class="tool active" data-tool="select"><span
+              class="symbol">↖</span><span>Выделение<small>Перемещение
+                объектов</small></span><kbd>V</kbd></button><button class="tool" data-tool="source"><span
+              class="symbol amber">✦</span><span>Лазер<small>Узкий пучок света</small></span></button><button
+            class="tool" data-tool="white"><span class="symbol amber">☼</span><span>Белый свет<small>Семь длин
+                волн</small></span></button></div>
+        <div class="sidebar-title">ОПТИЧЕСКИЕ ЭЛЕМЕНТЫ <span>02</span></div>
+        <div class="tools"><button class="tool" data-tool="mirror"><span class="symbol">╱</span><span>Плоское
+              зеркало<small>Отражение лучей</small></span></button><button class="tool" data-tool="convex"><span
+              class="symbol">◯</span><span>Собирающая линза<small>Фокусировка</small></span></button><button
+            class="tool" data-tool="concave"><span class="symbol">)(</span><span>Рассеивающая линза<small>Расхождение
+                лучей</small></span></button><button class="tool" data-tool="block"><span
+              class="symbol">▣</span><span>Стеклянный блок<small>Преломление</small></span></button><button class="tool"
+            data-tool="prism"><span class="symbol">△</span><span>Призма<small>Дисперсия света</small></span></button>
+        </div>
+        <div class="sidebar-title">ИЗМЕРЕНИЯ <span>03</span></div>
+        <div class="tools"><button class="tool" data-tool="ruler"><span
+              class="symbol">⌁</span><span>Линейка<small>Условные единицы</small></span></button><button class="tool"
+            data-tool="protractor"><span class="symbol">◴</span><span>Транспортир<small>Угловая
+                шкала</small></span></button></div>
+        <div class="sidebar-note"><strong>Совет</strong>
+          <p>Добавьте объект на сцену, затем выберите его для точной настройки справа.</p>
+        </div>
+      </aside>
+      <main class="center">
+        <div class="stagebar">
+          <div class="stage-label"><span class="pulse"></span> LIVE SIMULATION <span class="sep">/</span> 2D RAY TRACING
+          </div>
+          <div class="stage-actions"><label><input type="checkbox" id="grid" checked> Сетка</label><label><input
+                type="checkbox" id="normals"> Нормали</label><button class="subtle" id="clear">Очистить</button></div>
+        </div>
+        <div class="canvas-wrap" id="canvasWrap"><canvas id="scene" aria-label="Рабочая область симулятора"></canvas>
+          <div class="canvas-badge">● OPTICAL ENGINE <span>v4.0</span></div>
+          <div class="canvas-tip" id="tip">Выберите инструмент слева и нажмите на сцену</div>
+        </div>
+        <div class="bottom"><span id="objects">0 объектов</span><span id="rays">0 лучей</span><span id="events">0
+            взаимодействий</span><span class="right-bottom">Воздух · n = 1.000</span></div>
+        <section class="experiments">
+          <div class="section-head">
+            <div><small>БЫСТРЫЙ СТАРТ</small>
+              <h2>Готовые эксперименты</h2>
+            </div><span>04 СЦЕНАРИЯ</span>
+          </div>
+          <div class="preset-grid"><button class="preset" data-preset="reflection"><span
+                class="preset-icon">↗</span><span><strong>Отражение</strong><small>Зеркало и
+                  луч</small></span><span>↗</span></button><button class="preset" data-preset="refraction"><span
+                class="preset-icon">◇</span><span><strong>Преломление</strong><small>Закон
+                  Снеллиуса</small></span><span>↗</span></button><button class="preset" data-preset="lens"><span
+                class="preset-icon">◉</span><span><strong>Фокусировка</strong><small>Собирающая
+                  линза</small></span><span>↗</span></button><button class="preset" data-preset="spectrum"><span
+                class="preset-icon">△</span><span><strong>Дисперсия</strong><small>Призма и
+                  спектр</small></span><span>↗</span></button></div>
+        </section>
+      </main>
+      <aside class="right">
+        <div class="right-heading">ПАРАМЕТРЫ <span>⌘</span></div>
+        <div id="empty" class="empty">
+          <div class="empty-orbit">◎</div>
+          <h3>Выберите объект</h3>
+          <p>Нажмите на элемент лаборатории, чтобы изменить его свойства.</p>
+        </div>
+        <div id="properties" hidden>
+          <div class="object-head">
+            <div class="object-symbol" id="objectIcon">◈</div>
+            <div>
+              <h2 id="objectName">Объект</h2>
+              <p id="objectDesc"></p>
+            </div>
+          </div>
+          <div class="field" id="angleField"><label for="angle">Поворот <output id="angleValue"></output></label><input
+              id="angle" type="range" min="0" max="359"></div>
+          <div class="field" id="sizeField"><label for="size">Размер <output id="sizeValue"></output></label><input
+              id="size" type="range" min="40" max="260"></div>
+          <div class="field" id="indexField"><label for="index">Показатель преломления <output
+                id="indexValue"></output></label><input id="index" type="range" min="1.05" max="2" step="0.01"></div>
+          <div class="field" id="beamsField"><label for="beams">Количество лучей <output
+                id="beamsValue"></output></label><input id="beams" type="range" min="1" max="15" step="2"></div>
+          <div class="field" id="colorField"><label for="color">Цвет лазера</label><input id="color" type="color"></div>
+          <div class="field" id="measureField"><label>Измерение</label>
+            <div class="readout" id="measureValue"></div>
+          </div><button class="delete" id="delete">⌫ Удалить объект</button>
+        </div>
+        <div class="insights">
+          <div class="insights-label">ФИЗИКА <span>↗</span></div>
+          <div class="equation">n₁ sin θ₁ = n₂ sin θ₂</div>
+          <p>Закон Снеллиуса определяет преломление света при переходе между средами.</p>
+          <div class="insights-divider"></div>
+          <div class="equation small-eq">θᵢ = θᵣ</div>
+          <p>Угол падения равен углу отражения.</p><small>Модель 2D · без волновых эффектов · линзы аппроксимированы
+            многоугольниками</small>
+        </div>
+      </aside>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+</body>
+
+</html>
